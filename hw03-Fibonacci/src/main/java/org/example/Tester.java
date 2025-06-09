@@ -20,12 +20,9 @@ public class Tester implements Test {
 
     @Override
     public void run() {
-        int iterator = 0;
-
-        String in = getFirstLine("test." + iterator + ".in");
-        String out = getFirstLine("test." + iterator + ".out");
-
-        while (in != null && out != null) {
+        for (int i = 0; i < 13; i++) {
+            String in = getFirstLine("test." + i + ".in");
+            String out = getFirstLine("test." + i + ".out");
 
             int n = Integer.parseInt(in.trim());
             BigInteger expect = new BigInteger(out.trim());
@@ -37,12 +34,6 @@ public class Tester implements Test {
 //            System.out.println("Ожидаемой значение " + expect + ", результат " + result);
             System.out.println("Время выполнения  " + (end - begin) + "мс");
             System.out.println("Тест " + (expect.compareTo(result) == 0 ? "ПРОЙДЕН" : "НЕ ПРОЙДЕН"));
-
-
-            iterator++;
-
-            in = getFirstLine("test." + iterator + ".in");
-            out = getFirstLine("test." + iterator + ".out");
         }
     }
 
