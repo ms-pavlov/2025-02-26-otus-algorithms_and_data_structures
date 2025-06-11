@@ -21,5 +21,12 @@ public class Program {
         new Tester(new MatrixArrayFactory(100), 100_000).run();
         System.out.println("MatrixArray 1000");
         new Tester(new MatrixArrayFactory(1_000), 100_000).run();
+        System.out.println("SpaceArray 10");
+        new Tester(new SpaceArrayFactory(10), 100_000).run();
+        System.out.println("SpaceArray 100");
+        new Tester(new SpaceArrayFactory(100), 100_000).run();
+        System.out.println("SpaceArray 1000");
+        new Tester(new SpaceArrayFactory(1_000), 100_000).run();
+
     }
 }
