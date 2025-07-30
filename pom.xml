@@ -14,6 +14,7 @@
         <module>hw03-Fibonacci</module>
         <module>hw03-prime</module>
         <module>hw04-data-structures</module>
+        <module>hw09-linear-sort</module>
     </modules>
 
     <properties>
