@@ -16,6 +16,7 @@
         <module>hw04-data-structures</module>
         <module>hw05-chess-bit</module>
         <module>hw06-simple-sort</module>
+        <module>hw07-pyramid-sorting</module>
     </modules>
 
     <properties>
