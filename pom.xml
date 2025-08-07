@@ -17,6 +17,7 @@
         <module>hw05-chess-bit</module>
         <module>hw06-simple-sort</module>
         <module>hw07-pyramid-sorting</module>
+        <module>hw08-quick-and-external</module>
     </modules>
 
     <properties>
