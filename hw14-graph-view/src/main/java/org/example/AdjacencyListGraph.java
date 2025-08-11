@@ -20,7 +20,7 @@ public class AdjacencyListGraph<V> implements Graph<V>{
         if (!vertex.contains(v)) {
             addVertex(v);
         }
-        if (!vertex.contains(v)) {
+        if (!vertex.contains(v1)) {
             addVertex(v1);
         }
         adjacency.get(vertex.indexOf(v)).add(v1);

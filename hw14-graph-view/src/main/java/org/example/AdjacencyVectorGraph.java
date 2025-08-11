@@ -24,7 +24,7 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
         if (!vertex.contains(v)) {
             addVertex(v);
         }
-        if (!vertex.contains(v)) {
+        if (!vertex.contains(v1)) {
             addVertex(v1);
         }
         if(Arrays.stream(vectors[vertex.indexOf(v)]).noneMatch(value -> value != null && value == vertex.indexOf(v1))) {
