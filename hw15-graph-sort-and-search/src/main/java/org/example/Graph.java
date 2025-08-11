@@ -6,7 +6,9 @@ public interface Graph<V> {
 
     void addVertex(V v);
 
-    IArray<V> demukron();
+    IArray<V> demukronAsList();
+
+    int[][] demukron();
 
     void printDemukron();
 

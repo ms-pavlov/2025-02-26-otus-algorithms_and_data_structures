@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class AdjacencyVectorGraph<V> implements Graph<V> {
+public class AdjacencyVectorGraph implements Graph<String> {
 
-    private final IArray<V> vertex;
+    private final IArray<String> vertex;
     private GraphState[] state;
     private Integer[][] vectors;
     private int max;
@@ -18,9 +18,21 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
         state = new GraphState[0];
     }
 
+    public AdjacencyVectorGraph(Integer[][] vectors) {
+        this.vertex = new VectorArray<>();
+        this.vectors = vectors;
+        if (vectors.length > 0) {
+            max = vectors[0].length;
+        }
+        state = new GraphState[vectors.length];
+        for(int i = 0; i < vectors.length; i++) {
+            vertex.add((i+1) +"");
+        }
+    }
+
 
     @Override
-    public void addEdge(V v, V v1) {
+    public void addEdge(String v, String v1) {
         if (!vertex.contains(v)) {
             addVertex(v);
         }
@@ -40,7 +52,7 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
     }
 
     @Override
-    public void addVertex(V v) {
+    public void addVertex(String v) {
         if (!vertex.contains(v)) {
             vertex.add(v);
             Integer[][] newIncidents = new Integer[vertex.size()][max];
@@ -69,13 +81,13 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
             System.out.printf("%s |  %5s",
                     vertex.get(i),
                     Arrays.stream(vectors[i])
-                            .map(value -> null != value ? vertex.get(value).toString() : "--")
+                            .map(value -> null != value ? vertex.get(value) : "--")
                             .collect(Collectors.joining(" |  ")));
             System.out.println();
         }
     }
 
-    private int[] getInWeight(IArray<V> banList) {
+    private int[] getInWeight(IArray<String> banList) {
         int[] result = new int[vertex.size()];
         for (int i = 0; i < vertex.size(); i++) {
             if (!banList.contains(vertex.get(i))) {
@@ -90,9 +102,9 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
     }
 
     @Override
-    public IArray<V> demukron() {
+    public IArray<String> demukronAsList() {
 
-        IArray<V> result = new VectorArray<>();
+        IArray<String> result = new VectorArray<>();
         int sum;
         do {
             int[] weight = getInWeight(result);
@@ -113,12 +125,44 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
     }
 
     @Override
+    public int[][] demukron() {
+        int[][] result = new int[0][0];
+        IArray<String> stack = new VectorArray<>();
+        int sum;
+        do {
+            IArray<Integer> level = new VectorArray<>();
+            int[] weight = getInWeight(stack);
+            boolean anySources = false;
+            for (int i = 0; i < weight.length; i++) {
+                if (0 == weight[i] && !stack.contains(vertex.get(i))) {
+                    anySources = true;
+                    stack.add(vertex.get(i));
+                    level.add(i);
+                }
+            }
+            if (!anySources) {
+                return null;
+            }
+
+            result = Arrays.copyOf(result, result.length + 1);
+            result[result.length - 1] = new int[level.size()];
+            for (int i = 0; i < level.size(); i++) {
+                result[result.length - 1][i] = level.get(i);
+            }
+            sum = Arrays.stream(weight).sum();
+        } while (sum > 0);
+
+        return result;
+
+    }
+
+    @Override
     public void printDemukron() {
-        IArray<V> result = demukron();
+        IArray<String> result = demukronAsList();
 
         if (result != null) {
             for (int i = 0; i < result.size(); i++) {
-                System.out.printf(result.get(i).toString());
+                System.out.printf(result.get(i));
                 if (i < result.size() - 1) {
                     System.out.print(", ");
                 }
@@ -133,7 +177,7 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
         Arrays.fill(state, GraphState.NONE);
     }
 
-    private boolean DFS(int begin, IArray<V> stack) {
+    private boolean DFS(int begin, IArray<String> stack) {
         state[begin] = GraphState.SEEN;
         for (Integer item : vectors[begin]) {
             if(null != item) {
@@ -150,9 +194,9 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
     }
 
     @Override
-    public IArray<V> tarian() {
+    public IArray<String> tarian() {
         clearState();
-        IArray<V> stack = new VectorArray<>();
+        IArray<String> stack = new VectorArray<>();
         for (int i = 0; i < vertex.size(); i++) {
             if (state[i] == GraphState.NONE) {
                 if (!DFS(i, stack)) {
@@ -165,11 +209,11 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
 
     @Override
     public void printTarian() {
-        IArray<V> result = tarian();
+        IArray<String> result = tarian();
 
         if (result != null) {
             for (int i = result.size() -1 ; i >= 0; i--) {
-                System.out.printf(result.get(i).toString());
+                System.out.printf(result.get(i));
                 if (i > 0) {
                     System.out.print(", ");
                 }
