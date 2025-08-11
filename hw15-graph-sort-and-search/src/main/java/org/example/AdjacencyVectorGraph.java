@@ -1,21 +1,21 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AdjacencyVectorGraph<V> implements Graph<V> {
 
-    private final List<V> vertex;
+    private final IArray<V> vertex;
+    private GraphState[] state;
     private Integer[][] vectors;
     private int max;
 
     public AdjacencyVectorGraph() {
-        this.vertex = new ArrayList<>();
+        this.vertex = new VectorArray<>();
         max = 0;
         vectors = new Integer[0][max];
+        state = new GraphState[0];
     }
 
 
@@ -27,11 +27,11 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
         if (!vertex.contains(v1)) {
             addVertex(v1);
         }
-        if(Arrays.stream(vectors[vertex.indexOf(v)]).noneMatch(value -> value != null && value == vertex.indexOf(v1))) {
+        if (Arrays.stream(vectors[vertex.indexOf(v)]).noneMatch(value -> value != null && value == vertex.indexOf(v1))) {
             int count = (int) Arrays.stream(vectors[vertex.indexOf(v)])
                     .filter(Objects::nonNull)
                     .count();
-            if(count >= max) {
+            if (count >= max) {
                 resize();
             }
             vectors[vertex.indexOf(v)][count] = vertex.indexOf(v1);
@@ -46,8 +46,13 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
             Integer[][] newIncidents = new Integer[vertex.size()][max];
             System.arraycopy(vectors, 0, newIncidents, 0, vectors.length);
             vectors = newIncidents;
+
+            GraphState[] newState = new GraphState[vertex.size()];
+            System.arraycopy(state, 0, newState, 0, state.length);
+            state = newState;
         }
     }
+
     private void resize() {
         max++;
         Integer[][] old = vectors;
@@ -60,13 +65,118 @@ public class AdjacencyVectorGraph<V> implements Graph<V> {
 
     @Override
     public void print() {
-        for (var item : vertex) {
+        for (int i = 0; i < vertex.size(); i++) {
             System.out.printf("%s |  %5s",
-                    item,
-                    Arrays.stream(vectors[vertex.indexOf(item)])
-                            .map(value ->  null != value? vertex.get(value).toString(): "--")
+                    vertex.get(i),
+                    Arrays.stream(vectors[i])
+                            .map(value -> null != value ? vertex.get(value).toString() : "--")
                             .collect(Collectors.joining(" |  ")));
             System.out.println();
+        }
+    }
+
+    private int[] getInWeight(IArray<V> banList) {
+        int[] result = new int[vertex.size()];
+        for (int i = 0; i < vertex.size(); i++) {
+            if (!banList.contains(vertex.get(i))) {
+                for (var item : vectors[i]) {
+                    if (item != null) {
+                        result[item] += 1;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public IArray<V> demukron() {
+
+        IArray<V> result = new VectorArray<>();
+        int sum;
+        do {
+            int[] weight = getInWeight(result);
+            boolean anySources = false;
+            for (int i = 0; i < weight.length; i++) {
+                if (0 == weight[i] && !result.contains(vertex.get(i))) {
+                    anySources = true;
+                    result.add(vertex.get(i));
+                }
+            }
+            if (!anySources) {
+                return null;
+            }
+            sum = Arrays.stream(weight).sum();
+        } while (sum > 0);
+
+        return result;
+    }
+
+    @Override
+    public void printDemukron() {
+        IArray<V> result = demukron();
+
+        if (result != null) {
+            for (int i = 0; i < result.size(); i++) {
+                System.out.printf(result.get(i).toString());
+                if (i < result.size() - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
+        } else {
+            System.out.println("Топологическая сортировка не возможна");
+        }
+    }
+
+    private void clearState() {
+        Arrays.fill(state, GraphState.NONE);
+    }
+
+    private boolean DFS(int begin, IArray<V> stack) {
+        state[begin] = GraphState.SEEN;
+        for (Integer item : vectors[begin]) {
+            if(null != item) {
+                if (state[item] == GraphState.NONE) {
+                    if (!DFS(item, stack)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        state[begin] = GraphState.CPLT;
+        stack.add(vertex.get(begin));
+        return true;
+    }
+
+    @Override
+    public IArray<V> tarian() {
+        clearState();
+        IArray<V> stack = new VectorArray<>();
+        for (int i = 0; i < vertex.size(); i++) {
+            if (state[i] == GraphState.NONE) {
+                if (!DFS(i, stack)) {
+                    return null;
+                }
+            }
+        }
+        return stack;
+    }
+
+    @Override
+    public void printTarian() {
+        IArray<V> result = tarian();
+
+        if (result != null) {
+            for (int i = result.size() -1 ; i >= 0; i--) {
+                System.out.printf(result.get(i).toString());
+                if (i > 0) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
+        } else {
+            System.out.println("Топологическая сортировка не возможна");
         }
     }
 }
