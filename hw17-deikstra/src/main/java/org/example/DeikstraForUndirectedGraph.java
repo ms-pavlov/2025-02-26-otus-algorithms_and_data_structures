@@ -25,25 +25,15 @@ public class DeikstraForUndirectedGraph<V> implements ShortWay<V> {
         for (int k = 0; k < vertexes.size(); k++) {
             min = getMin(ways);
             visited[min] = true;
-            if (min >= 0) {
-                V minVertex = vertexes.get(min);
-                int finalMin = min;
-                graph.getEdges().stream()// перебор всех ребер
-                        .forEach(edge -> {
-                            if (edge.getV1().equals(minVertex)) {
-                                int weight = ways[finalMin] + edge.getWeight();
-                                if (weight < ways[vertexes.indexOf(edge.getV2())]) {
-                                    ways[vertexes.indexOf(edge.getV2())] = weight;
-                                }
-                            }
-                            if (edge.getV2().equals(minVertex)) {
-                                int weight = ways[finalMin] + edge.getWeight();
-                                if (weight < ways[vertexes.indexOf(edge.getV1())]) {
-                                    ways[vertexes.indexOf(edge.getV1())] = weight;
-                                }
-                            }
-                        });
-            }
+            V minVertex = vertexes.get(min);
+            int finalMin = min;
+            graph.getEdges(minVertex).stream()// перебор всех ребер для вершины
+                    .forEach(edge -> {
+                        int weight = ways[finalMin] + edge.getWeight();
+                        if (weight < ways[vertexes.indexOf(edge.getV2())]) {
+                            ways[vertexes.indexOf(edge.getV2())] = weight;
+                        }
+                    });
 
         }
         return ways;

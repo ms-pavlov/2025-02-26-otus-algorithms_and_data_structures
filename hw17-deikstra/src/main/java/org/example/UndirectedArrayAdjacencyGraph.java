@@ -63,10 +63,23 @@ public class UndirectedArrayAdjacencyGraph<V> implements Graph<V> {
         IArray<Edge<V>> result = new VectorArray<>();
 
         for (int i = 0; i < edges.length; i++) {
-            for (int j = i+1; j < edges[i].length; j++) {
-                if(null != edges[i][j]) {
+            for (int j = i + 1; j < edges[i].length; j++) {
+                if (null != edges[i][j]) {
                     result.add(new Edge<>(vertex.get(i), vertex.get(j), edges[i][j]));
                 }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public IArray<Edge<V>> getEdges(V v) {
+        IArray<Edge<V>> result = new VectorArray<>();
+        int index = vertex.indexOf(v);
+        for (int j = 0; j < edges[index].length; j++) {
+            if (null != edges[index][j]) {
+                result.add(new Edge<>(vertex.get(index), vertex.get(j), edges[index][j]));
             }
         }
 

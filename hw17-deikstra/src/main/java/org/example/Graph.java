@@ -8,6 +8,8 @@ public interface Graph<V> {
 
     IArray<Edge<V>> getEdges();
 
+    IArray<Edge<V>> getEdges(V v);
+
     IArray<V> getVertexes();
 
     void print();
