@@ -29,7 +29,7 @@ public class BellmannFordForUndirectedGraph<V> implements ShortWay<V> {
         );
 
         for (int k = 0; k < vertexes.size() - 1; k++) {
-            graph.getEdges().stream().forEach(
+            graph.getEdges().stream().forEach( // перебор всех ребер
                     edge -> {
                         if (ways[vertexes.indexOf(edge.getV1())] + edge.getWeight() < ways[vertexes.indexOf(edge.getV2())]) {
                             ways[vertexes.indexOf(edge.getV2())] = ways[vertexes.indexOf(edge.getV1())] + edge.getWeight();
