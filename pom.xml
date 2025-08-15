@@ -19,6 +19,7 @@
         <module>hw07-pyramid-sorting</module>
         <module>hw08-quick-and-external</module>
         <module>hw19-Knuth-Morris-Pratt</module>
+        <module>hw20-RLE</module>
     </modules>
 
     <properties>
