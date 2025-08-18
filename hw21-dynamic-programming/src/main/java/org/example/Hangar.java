@@ -8,7 +8,7 @@ public class Hangar {
     private final int width;
     private final int height;
     private final int[][] map;
-    private final Random rand = new Random(12345);
+    private final Random rand = new Random();
     private int[] L;
     private int[] R;
     private int[] heights;
