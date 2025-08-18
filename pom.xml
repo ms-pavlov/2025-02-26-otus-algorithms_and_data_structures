@@ -20,6 +20,7 @@
         <module>hw08-quick-and-external</module>
         <module>hw19-Knuth-Morris-Pratt</module>
         <module>hw21-dynamic-programming</module>
+        <module>hw22-HyperLogLog</module>
     </modules>
 
     <properties>
