@@ -70,10 +70,19 @@ public class ThreadLocalExpressionStorage implements ExpressionStorage {
                 .putAll(expressionFactories);
     }
 
+    @Override
+    public void refresh() {
+        checkIntiScope();
+        scopeInit.execute(this);
+    }
+
     private void checkIntiScope() {
         if (!storage.containsKey(scope.get())) {
             storage.put(scope.get(), new ConcurrentHashMap<>());
             scopeInit.execute(this);
         }
     }
+
+
+
 }

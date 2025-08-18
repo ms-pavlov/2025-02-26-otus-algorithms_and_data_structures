@@ -18,4 +18,6 @@ public interface ExpressionStorage {
     void put(Expressions expression, ExpressionFactory method);
 
     void put(Map<Expressions, ExpressionFactory> expressionFactories);
+
+    void refresh();
 }

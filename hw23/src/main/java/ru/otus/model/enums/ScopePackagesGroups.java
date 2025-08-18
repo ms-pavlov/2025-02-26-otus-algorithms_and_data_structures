@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ScopePackagesGroups {
 
+    MAIN("main", "Основной"),
     DEFAULT("default", "Базовый покет"),
     GET_ORDERS("getAllOrder", "Получение списка заказов"),
     CREATE_ORDER("createOrder", "Создание заказа"),

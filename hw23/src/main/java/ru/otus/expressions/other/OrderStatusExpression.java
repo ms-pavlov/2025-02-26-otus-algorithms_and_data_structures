@@ -26,7 +26,7 @@ public class OrderStatusExpression implements ExpressionFactory {
         }
         return context -> {
             Order order = (Order) context.get(ORDER_PARAMETER);
-            order.setOrderStatus((OrderStatuses) args[0]);
+            order.setOrderStatus(OrderStatuses.getByName(String.valueOf(args[0])));
         };
     }
 }

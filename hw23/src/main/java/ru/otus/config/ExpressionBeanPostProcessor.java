@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import ru.otus.annotations.ExpressionsComponent;
 import ru.otus.expressions.ExpressionFactory;
@@ -13,6 +14,7 @@ import ru.otus.expressions.services.PackageService;
 
 @Component
 @AllArgsConstructor
+@Order(0)
 public class ExpressionBeanPostProcessor implements BeanPostProcessor {
 
     private final PackageService packageService;

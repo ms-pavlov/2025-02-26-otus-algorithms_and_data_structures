@@ -25,7 +25,8 @@ public class OrderStatusValidatorExpression implements ExpressionFactory {
         }
         return context -> {
             List<OrderStatuses> orderStatuses = Arrays.stream(args)
-                    .map(object -> (OrderStatuses) object)
+                    .map(object -> (String) object)
+                    .map(OrderStatuses::getByName)
                     .toList();
             Order order = (Order) context.get(ORDER_PARAMETER);
             if (!orderStatuses.contains(order.getOrderStatus())) {

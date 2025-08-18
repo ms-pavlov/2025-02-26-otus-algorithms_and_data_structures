@@ -16,3 +16,6 @@ spring:
       database: orders
 eventLoopThreadPoolSize: 2
 dataSourceExecutorThreadPoolSize: 4
+dsl:
+  scripts:
+    dir: /scripts
