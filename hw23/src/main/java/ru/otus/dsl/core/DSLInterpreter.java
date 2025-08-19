@@ -61,9 +61,7 @@ public class DSLInterpreter implements ApplicationListener<ContextRefreshedEvent
             try {
                 String script = FileUtils.readFileToString(file);
                 TokenScanner tokenScanner = new TokenScanner(
-                        search.scan(script.replaceAll("\n", "")
-                                        .replaceAll("\r", "")
-                                        .replaceAll("\t", ""))
+                        search.scan(script)
                                 .stream()
                                 .collect(Collectors.groupingBy(Token::getBegin)));
 

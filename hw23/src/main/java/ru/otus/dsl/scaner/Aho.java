@@ -5,12 +5,15 @@ import ru.otus.model.Node;
 import ru.otus.model.Token;
 import ru.otus.model.enums.KeyWords;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 @Component
 public class Aho implements Search {
 
-    private Node root;
+    private final Node root;
 
     protected Aho() {
         this.root = new Node("");
@@ -20,6 +23,10 @@ public class Aho implements Search {
 
     @Override
     public List<Token> scan(String text) {
+        text = text.replaceAll("\n", "")
+                .replaceAll("\r", "")
+                .replaceAll("\t", "");
+
         List<Token> matches = new ArrayList<>();
         Node node = root;
         int begin = 0;
