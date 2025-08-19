@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public enum KeyWords {
 
-    ACTION("действе"),
+    ACTION("действие"),
     SCOPE("область"),
     EXECUTE("выполнить"),
     OCB("{"),
